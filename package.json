@@ -1,0 +1,21 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "file-manager implemented with node.js",
+  "keywords": [
+    "node.js",
+    "file-manager"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-SlavikusVOG:rolling-scopes-school/slavikusvog-NODEJS2025Q4.git"
+  },
+  "license": "MIT",
+  "author": "SlavikusVOG",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  }
+}
