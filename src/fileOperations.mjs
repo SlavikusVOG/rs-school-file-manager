@@ -1,5 +1,5 @@
 import { createReadStream } from "node:fs";
-import { mkdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, rename, stat, writeFile } from "node:fs/promises";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
@@ -64,8 +64,18 @@ async function makeDir(directory) {
   }
 }
 
-async function rn() {
-  // TODO: implement
+async function rn(file, newName) {
+  try {
+    const fileStat = await stat(file);
+    if (fileStat.isFile()) {
+      await rename(file, newName);
+    }
+    console.log(`\nFile ${file} is renamed to ${newName}\n`);
+    return true
+  }
+  catch(error) {
+    return false;
+  }
 }
 
 async function cp() {

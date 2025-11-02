@@ -121,6 +121,15 @@ class FileManager {
         break;
       }
       case 'rn': {
+        if (args.length === 2) {
+          const result = await fileOperations.rn(args[0], args[1]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'cp': {
