@@ -138,7 +138,6 @@ class FileManager {
   }
 }
 
-console.log(process.argv);
 const argument = process.argv.slice(2)[0];
 if (argument.startsWith('--username')) {
   const username = argument.split('=')[1];
