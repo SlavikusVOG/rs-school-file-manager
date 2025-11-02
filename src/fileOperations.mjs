@@ -40,14 +40,28 @@ async function add(fileName) {
       return true;
     }
     catch(error) {
-      return false;
       console.error(error);
+      return false;
     }
   }
 }
 
-async function mkdir() {
-  // TODO: implement
+async function makeDir(directory) {
+  try {
+    await stat(directory);
+    return false;
+  }
+  catch(error) {
+    try {
+      await mkdir(directory);
+      console.log(`\nDirectory ${directory} is created`);
+      return true;
+    }
+    catch(error) {
+      console.error(error);
+      return false
+    }
+  }
 }
 
 async function rn() {
@@ -69,7 +83,7 @@ async function rm() {
 const fileOperations = {
   cat,
   add,
-  mkdir,
+  mkdir: makeDir,
   rn,
   cp,
   mv,

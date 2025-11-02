@@ -28,7 +28,7 @@ class FileManager {
 
   showCurrentWorkingDirectory() {
     const currentDirectory = process.cwd();
-    const message = `You are currently in ${currentDirectory}`;
+    const message = `\nYou are currently in ${currentDirectory}`;
     console.log(message);
   }
 
@@ -41,7 +41,7 @@ class FileManager {
     let finishFlag;
     do {
       try {
-        const answer = await rl.question('Enter the command: ');
+        const answer = await rl.question('\nEnter the command: ');
         finishFlag = await this.handleCommand(answer);
       }
       catch(error) {
@@ -109,6 +109,15 @@ class FileManager {
         break;
       }
       case 'mkdir': {
+        if (args.length === 1) {
+          const result = await fileOperations.mkdir(args[0]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'rn': {
