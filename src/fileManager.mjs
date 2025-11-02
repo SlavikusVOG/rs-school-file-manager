@@ -1,6 +1,3 @@
-import fs from "node:fs/promises"
-import { Readable, Writable, Transform, Duplex } from "node:stream";
-import { pipeline } from "node:stream/promises";
 import os from "os";
 import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
