@@ -1,5 +1,5 @@
 import { createReadStream } from "node:fs";
-import { stat, writeFile } from "node:fs/promises";
+import { mkdir, stat, writeFile } from "node:fs/promises";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
@@ -37,8 +37,10 @@ async function add(fileName) {
     try {
       await writeFile(fileName, "");
       console.log(`\nFile ${fileName} is created`);
+      return true;
     }
     catch(error) {
+      return false;
       console.error(error);
     }
   }
