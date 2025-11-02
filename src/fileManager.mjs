@@ -6,6 +6,7 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
 import nwd from "./nwd.mjs";
+import fileOperations from "./fileOperations.mjs";
 
 class FileManager {
   constructor(username) {
@@ -85,6 +86,12 @@ class FileManager {
         break;
       }
       case 'cat': {
+        if (args.length === 1) {
+          await fileOperations.cat(args[0]);
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'add': {
