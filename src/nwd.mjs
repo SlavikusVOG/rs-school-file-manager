@@ -24,7 +24,7 @@ async function ls() {
   const contents = await fs.readdir(currentPath);
   const directories = [];
   const files = [];
-  contents.forEach(async (c) => {
+  await Promise.all(contents.map(async (c) => {
     const itemPath = path.join(currentPath, c);
     const itemStat = await fs.stat(itemPath);
     if (itemStat.isDirectory()) {
@@ -33,22 +33,17 @@ async function ls() {
     if (itemStat.isFile()) {
       files.push(c);
     }
-  });
+  }));
   const data = [];
-  let count = 1;
-  data.push(["Index", "Name", "Type"]);
-  data.push([count, ".", ""]);
-  count++;
-  data.push([count, "..", ""]);
-  count++;
+  data.push({name: ".", type: ""});
+  data.push({name: "..", type: ""});
   directories.forEach((d) => {
-    data.push([count, d, "directory"]);
-    count++;
+    data.push({name: d, type: "directory"});
   });
   files.forEach((f) => {
-    data.push([count, f, "file"]);
-    count++;
+    data.push({ name: f, type: "file"});
   });
+  console.table(data);
 }
 
 /**

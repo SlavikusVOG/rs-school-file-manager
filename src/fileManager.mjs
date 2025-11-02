@@ -60,7 +60,7 @@ class FileManager {
    * @param {string} command
    * @returns {boolean} shows whether the command was executed successfully
    */
-  handleCommand (command) {
+  async handleCommand (command) {
     const c = command.trim();
     if (c.startsWith('cd ')) {
       if (c.split(" ").length > 2) {
@@ -106,14 +106,12 @@ class FileManager {
         break;
       }
       case 'ls': {
+        await nwd.ls();
         break;
       }
       case '.exit': {
         console.log(`Thank you for using File Manager, ${this.username}`);
         return true;
-      }
-      case 'ls': {
-        break;
       }
       case 'os --EOL': {
         break;
