@@ -145,9 +145,27 @@ class FileManager {
         break;
       }
       case 'mv': {
+        if (args.length === 2) {
+          const result = await fileOperations.mv(args[0], args[1]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'rm': {
+        if (args.length === 1) {
+          const result = await fileOperations.rm(args[0]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'hash': {

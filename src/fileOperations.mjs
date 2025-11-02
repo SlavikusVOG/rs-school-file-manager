@@ -1,5 +1,5 @@
 import { createReadStream, createWriteStream } from "node:fs";
-import { mkdir, rename, stat, writeFile } from "node:fs/promises";
+import { mkdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import path from "node:path";
@@ -92,12 +92,29 @@ async function cp(file, directory) {
   }
 }
 
-async function mv() {
-  // TODO: implement
+async function mv(file, directory) {
+  try {
+    const readStream = createReadStream(file);
+    const destination = path.join(directory, file);
+    const writeStream = createWriteStream(destination);
+    await pipeline(readStream, writeStream);
+    await rm(file);
+    console.log(`\nFile ${file} moved to directory ${directory}`);
+  }
+  catch(error) {
+    return false;
+  }
 }
 
-async function rm() {
-  // TODO: implement
+async function removeFile(file) {
+  try {
+    await rm(file);
+    console.log(`\nFile ${file} is deleted\n`)
+    return true;
+  }
+  catch(error) {
+    return false;
+  }
 }
 
 const fileOperations = {
@@ -107,7 +124,7 @@ const fileOperations = {
   rn,
   cp,
   mv,
-  rm,
+  rm: removeFile,
 }
 
 export default fileOperations;
