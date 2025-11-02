@@ -7,6 +7,7 @@ import { stdin as input, stdout as output } from "node:process";
 
 import nwd from "./nwd.mjs";
 import fileOperations from "./fileOperations.mjs";
+import osInfo from "./osInfo.mjs";
 
 class FileManager {
   constructor(username) {
@@ -77,6 +78,7 @@ class FileManager {
     const command = commandString.trim().split(" ")[0];
     const args = commandString.trim().split(" ")
     args.shift();
+    let commandFoundFlag = true;
     switch(command) {
       case 'cd': {
         if (args.length === 1) {
@@ -118,7 +120,7 @@ class FileManager {
         else {
           this.showOperationFailedMessage();
         }
-        break;
+        return false
       }
       case 'rn': {
         if (args.length === 2) {
@@ -130,7 +132,7 @@ class FileManager {
         else {
           this.showOperationFailedMessage();
         }
-        break;
+        return false
       }
       case 'cp': {
         if (args.length === 2) {
@@ -142,7 +144,7 @@ class FileManager {
         else {
           this.showOperationFailedMessage();
         }
-        break;
+        return false;
       }
       case 'mv': {
         if (args.length === 2) {
@@ -154,7 +156,7 @@ class FileManager {
         else {
           this.showOperationFailedMessage();
         }
-        break;
+        return false;
       }
       case 'rm': {
         if (args.length === 1) {
@@ -166,7 +168,7 @@ class FileManager {
         else {
           this.showOperationFailedMessage();
         }
-        break;
+        return false
       }
       case 'hash': {
         break;
@@ -179,32 +181,44 @@ class FileManager {
       }
       case 'up': {
         nwd.goUp();
-        break;
+        return false
       }
       case 'ls': {
         await nwd.ls();
-        break;
+        return false
       }
       case '.exit': {
         return true;
       }
-      case 'os --EOL': {
-        break;
-      }
-      case 'os --cpus': {
-        break;
-      }
-      case 'os-homedir': {
-        break;
-      }
-      case 'os --username': {
-        break;
-      }
-      case 'os --architecture': {
-        break;
-      }
       default: {
-
+        commandFoundFlag = false;
+      }
+    }
+    if (!commandFoundFlag) {
+      switch(commandString.trim()) {
+        case 'os --EOL': {
+          osInfo.printEndOfLine();
+          return false;
+        }
+        case 'os --cpus': {
+          osInfo.printCPUInfo();
+          return false;
+        }
+        case 'os --homedir': {
+          osInfo.printHomeDirectory();
+          return false;
+        }
+        case 'os --username': {
+          osInfo.printUsername();
+          return false;
+        }
+        case 'os --architecture': {
+          osInfo.printArchitecture();
+          return false;
+        }
+        default: {
+          this.showOperationFailedMessage();
+        }
       }
     }
     return false;
