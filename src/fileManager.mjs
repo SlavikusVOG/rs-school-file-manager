@@ -68,7 +68,7 @@ class FileManager {
         return false;
       }
       const path = c.split(" ")[1];
-
+      nwd.cd(path);
       return false;
     }
     if (c.startsWith('cat ')) {
@@ -103,6 +103,7 @@ class FileManager {
     }
     switch(c) {
       case 'up': {
+        nwd.goUp();
         break;
       }
       case 'ls': {
