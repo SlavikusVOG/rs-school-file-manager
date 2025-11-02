@@ -141,6 +141,7 @@ const argument = process.argv.slice(2)[0];
 if (argument.startsWith('--username')) {
   const username = argument.split('=')[1];
   const fileManager = new FileManager(username);
+  fileManager.showGreetings();
   await fileManager.takeCommandsLoop();
   fileManager.showFarewell();
 }
