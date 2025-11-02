@@ -6,6 +6,7 @@ import nwd from "./nwd.mjs";
 import fileOperations from "./fileOperations.mjs";
 import osInfo from "./osInfo.mjs";
 import hash from "./hash.mjs";
+import zip from "./compress.mjs";
 
 class FileManager {
   constructor(username) {
@@ -181,10 +182,28 @@ class FileManager {
         return false;
       }
       case 'compress': {
-        break;
+        if (args.length === 2) {
+          const result = await zip.compressFile(args[0], args[1]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
+        return false;
       }
       case 'decompress': {
-        break;
+        if (args.length === 2) {
+          const result = await zip.decompressFile(args[0], args[1]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
+        return false;
       }
       case 'up': {
         nwd.goUp();
