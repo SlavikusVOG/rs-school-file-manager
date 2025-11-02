@@ -1,10 +1,10 @@
-import { createReadStream } from "node:fs";
+import { createReadStream, createWriteStream } from "node:fs";
 import { mkdir, rename, stat, writeFile } from "node:fs/promises";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
+import path from "node:path";
 
 // TODO: fix this
-
 async function cat(filePath) {
   console.log(`\nThe content of file "${filePath}":\n`);
   try {
@@ -78,8 +78,18 @@ async function rn(file, newName) {
   }
 }
 
-async function cp() {
-  // TODO: implement
+async function cp(file, directory) {
+  try {
+    const readStream = createReadStream(file);
+    const destination = path.join(directory, file);
+    const writeStream = createWriteStream(destination);
+    await pipeline(readStream, writeStream);
+    console.log(`File ${file} copied`);
+    return true;
+  }
+  catch(error) {
+    return false;
+  }
 }
 
 async function mv() {
