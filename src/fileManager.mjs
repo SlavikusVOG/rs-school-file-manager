@@ -49,6 +49,9 @@ class FileManager {
           console.log("\n")
           finishFlag = true;
         }
+        else {
+          console.log(error);
+        }
       }
     }
     while (!finishFlag);
@@ -58,57 +61,59 @@ class FileManager {
     console.log("Invalid input");
   }
 
-  showErrorMessage() {
+  showOperationFailedMessage() {
     console.error("Operation failed");
   }
 
   /**
    * handle user commands
-   * @param {string} command
+   * @param {string} commandString
    * @returns {boolean} shows whether the command was executed successfully
    */
-  async handleCommand (command) {
-    const c = command.trim();
-    if (c.startsWith('cd ')) {
-      if (c.split(" ").length > 2) {
-        this.showErrorMessage();
-        return false;
+  async handleCommand (commandString) {
+    const command = commandString.trim().split(" ")[0];
+    const args = commandString.trim().split(" ")
+    args.shift();
+    switch(command) {
+      case 'cd': {
+        if (args.length === 1) {
+          nwd.cd(args[0]);
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
+        break;
       }
-      const path = c.split(" ")[1];
-      nwd.cd(path);
-      return false;
-    }
-    if (c.startsWith('cat ')) {
-      return false;
-    }
-    if (c.startsWith('add ')) {
-      return false;
-    }
-    if (c.startsWith('mkdir ')) {
-      return false;
-    }
-    if (c.startsWith('rn ')) {
-      return false;
-    }
-    if (c.startsWith('cp ')) {
-      return false;
-    }
-    if (c.startsWith('mv ')) {
-      return false;
-    }
-    if (c.startsWith('rm ')) {
-      return false;
-    }
-    if (c.startsWith('hash ')) {
-      return false;
-    }
-    if (c.startsWith('compress ')) {
-      return false;
-    }
-    if (c.startsWith('decompress')) {
-      return false;
-    }
-    switch(c) {
+      case 'cat': {
+        break;
+      }
+      case 'add': {
+        break;
+      }
+      case 'mkdir': {
+        break;
+      }
+      case 'rn': {
+        break;
+      }
+      case 'cp': {
+        break;
+      }
+      case 'mv': {
+        break;
+      }
+      case 'rm': {
+        break;
+      }
+      case 'hash': {
+        break;
+      }
+      case 'compress': {
+        break;
+      }
+      case 'decompress': {
+        break;
+      }
       case 'up': {
         nwd.goUp();
         break;
