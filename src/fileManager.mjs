@@ -43,7 +43,6 @@ class FileManager {
       try {
         const answer = await rl.question('Enter the command: ');
         finishFlag = await this.handleCommand(answer);
-        this.showCurrentWorkingDirectory();
       }
       catch(error) {
         if (error.code === "ABORT_ERR") {
@@ -51,8 +50,11 @@ class FileManager {
           finishFlag = true;
         }
         else {
-          console.log(error);
+          this.showOperationFailedMessage();
         }
+      }
+      finally {
+        this.showCurrentWorkingDirectory();
       }
     }
     while (!finishFlag);
