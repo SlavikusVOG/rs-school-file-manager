@@ -97,6 +97,15 @@ class FileManager {
         break;
       }
       case 'add': {
+        if (args.length === 1) {
+          const result = await fileOperations.add(args[0]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
         break;
       }
       case 'mkdir': {
