@@ -1,56 +1,105 @@
 import fs from "node:fs/promises"
 import { Readable, Writable, Transform, Duplex } from "node:stream";
 import { pipeline } from "node:stream/promises";
+import os from "os";
+import * as readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
+import nwd from "./nwd.mjs";
 
 class FileManager {
   constructor(username) {
     this.username = username;
+    const workingDirectory = os.homedir();
+    process.chdir(workingDirectory);
   }
 
-  showGreetings (username) {
-    message = `Welcome to the File Manager, ${username}`;
+  showGreetings () {
+    const message = `Welcome to the File Manager, ${this.username}`;
     console.log(message);
+  }
+
+  showFarewell () {
+    const message = `Thank you for using File Manager, ${this.username}, goodbye!`;
+    console.log(message);
+    
+  }
+
+  showCurrentWorkingDirectory() {
+    const currentDirectory = process.cwd();
+    const message = `You are currently in ${currentDirectory}`;
+    console.log(message);
+  }
+
+  async takeCommandsLoop() {
+    this.showCurrentWorkingDirectory();
+    const rl = readline.createInterface({
+      input,
+      output,
+
+    });
+    let finishFlag;
+    do {
+      const answer = await rl.question('Enter the command: ');
+      finishFlag = await this.handleCommand(answer);
+      this.showCurrentWorkingDirectory();
+    }
+    while (!finishFlag);
+  }
+
+  showInvalidInputMessage() {
+    console.log("Invalid input");
+  }
+
+  showErrorMessage() {
+    console.error("Operation failed");
   }
 
   /**
    * handle user commands
-   * @param {string} command 
+   * @param {string} command
+   * @returns {boolean} shows whether the command was executed successfully
    */
-  commandHandler (command) {
+  handleCommand (command) {
     const c = command.trim();
     if (c.startsWith('cd ')) {
-      return;
+      if (c.split(" ").length > 2) {
+        this.showErrorMessage();
+        return false;
+      }
+      const path = c.split(" ")[1];
+
+      return false;
     }
     if (c.startsWith('cat ')) {
-      return;
+      return false;
     }
     if (c.startsWith('add ')) {
-      return;
+      return false;
     }
     if (c.startsWith('mkdir ')) {
-      return;
+      return false;
     }
     if (c.startsWith('rn ')) {
-      return;
+      return false;
     }
     if (c.startsWith('cp ')) {
-      return;
+      return false;
     }
     if (c.startsWith('mv ')) {
-      return;
+      return false;
     }
     if (c.startsWith('rm ')) {
-      return;
+      return false;
     }
     if (c.startsWith('hash ')) {
-      return;
+      return false;
     }
     if (c.startsWith('compress ')) {
-      return;
+      return false;
     }
     if (c.startsWith('decompress')) {
-      return;
+      return false;
     }
     switch(c) {
       case 'up': {
@@ -61,7 +110,7 @@ class FileManager {
       }
       case '.exit': {
         console.log(`Thank you for using File Manager, ${this.username}`);
-        break;
+        return true;
       }
       case 'ls': {
         break;
@@ -81,8 +130,19 @@ class FileManager {
       case 'os --architecture': {
         break;
       }
+      default: {
+
+      }
     }
+    return false;
   }
 }
 
-
+console.log(process.argv);
+const argument = process.argv.slice(2)[0];
+if (argument.startsWith('--username')) {
+  const username = argument.split('=')[1];
+  const fileManager = new FileManager(username);
+  await fileManager.takeCommandsLoop();
+  fileManager.showFarewell();
+}
