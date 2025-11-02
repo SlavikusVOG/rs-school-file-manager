@@ -36,13 +36,20 @@ class FileManager {
     const rl = readline.createInterface({
       input,
       output,
-
     });
     let finishFlag;
     do {
-      const answer = await rl.question('Enter the command: ');
-      finishFlag = await this.handleCommand(answer);
-      this.showCurrentWorkingDirectory();
+      try {
+        const answer = await rl.question('Enter the command: ');
+        finishFlag = await this.handleCommand(answer);
+        this.showCurrentWorkingDirectory();
+      }
+      catch(error) {
+        if (error.code === "ABORT_ERR") {
+          console.log("\n")
+          finishFlag = true;
+        }
+      }
     }
     while (!finishFlag);
   }
@@ -111,7 +118,6 @@ class FileManager {
         break;
       }
       case '.exit': {
-        console.log(`Thank you for using File Manager, ${this.username}`);
         return true;
       }
       case 'os --EOL': {
@@ -144,4 +150,16 @@ if (argument.startsWith('--username')) {
   fileManager.showGreetings();
   await fileManager.takeCommandsLoop();
   fileManager.showFarewell();
+  let timer = 2;
+  console.log(`${timer+1}...`);
+  const timerId = setInterval(() => {
+    console.log(`${timer}...`);
+    if (timer === 1) {
+      clearInterval(timerId);
+    }
+    timer--;
+  }, 1000);
+  setTimeout(() => {
+    process.exit(0);
+  },3000);
 }
