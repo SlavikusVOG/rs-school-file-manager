@@ -5,6 +5,7 @@ import { stdin as input, stdout as output } from "node:process";
 import nwd from "./nwd.mjs";
 import fileOperations from "./fileOperations.mjs";
 import osInfo from "./osInfo.mjs";
+import hash from "./hash.mjs";
 
 class FileManager {
   constructor(username) {
@@ -168,7 +169,16 @@ class FileManager {
         return false
       }
       case 'hash': {
-        break;
+        if (args.length === 1) {
+          const result = await hash.calcHash(args[0]);
+          if (result === false) {
+            this.showOperationFailedMessage();
+          }
+        }
+        else {
+          this.showOperationFailedMessage();
+        }
+        return false;
       }
       case 'compress': {
         break;
